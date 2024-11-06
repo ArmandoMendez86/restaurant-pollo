@@ -7,21 +7,69 @@ class ControladorUsuarios
 
     static public $tabla = "empleados";
 
-    /* ############################# Obetner usuarios ############################# */
+    static public function ctrIngresoUsuario($datos)
+    {
+
+        unset($datos['accion']);
+
+        $usuario = $datos['usuario'];
+        $contraseñaIngresada = $usuario["password"];
+
+        $item = "usuario";
+        $valor = $usuario["usuario"];
+
+        $respuesta = ModeloUsuario::MdlObtenerUsuario(self::$tabla, $item, $valor);
+
+        if ($respuesta && password_verify($contraseñaIngresada, $respuesta["password"])) {
+
+            if ($respuesta["estado"] == 1) {
+                session_start();
+                $_SESSION["iniciarSesion"] = "ok";
+                $_SESSION["id"] = $respuesta["id"];
+                $_SESSION["nombre"] = $respuesta["nombre"];
+                $_SESSION["apellido"] = $respuesta["apellido"];
+                $_SESSION["usuario"] = $respuesta["usuario"];
+                $_SESSION["estado"] = $respuesta["estado"];
+                $_SESSION["rol"] = $respuesta["rol"];
+
+
+                $fecha = date("Y-m-d");
+                $hora = date("H:i:s");
+
+                $fechaActual = $fecha . " " . $hora;
+
+                $item1 = "ultimo_login";
+                $valor1 = $fechaActual;
+                $item2 = "id";
+                $valor2 = $respuesta["id"];
+
+                $registrarUltimoLogin = ModeloUsuario::mdlActivarUsuario(self::$tabla, $item1, $valor1, $item2, $valor2);
+
+                if ($registrarUltimoLogin == "ok") {
+                    echo json_encode(['status' => 'success', 'redirect' => 'productos']);
+                }
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Cuenta inactiva']);
+            }
+        } else {
+            echo json_encode(['status' => 'error', 'message' => 'Usuario o contraseña incorrecta']);
+        }
+    }
+
     static public function ctrObtenerUsuarios()
     {
         $respuesta = ModeloUsuario::mdlObtenerUsuarios(self::$tabla);
         return $respuesta;
     }
 
-    /* ############################# Actualizar estado de usuarios ############################# */
+
     static  public function ctrActualizarEstado($datos)
     {
         unset($datos['accion']);
         $respuesta = ModeloUsuario::mdlActualizarEstado(self::$tabla, $datos);
         return $respuesta;
     }
-    /* ############################# Actualizar datos de usuario ############################# */
+
     static  public function ctrActualizarUsuario($datos)
     {
         unset($datos['accion']);
@@ -29,7 +77,7 @@ class ControladorUsuarios
         $respuesta = ModeloUsuario::mdlActualizarUsuario(self::$tabla, $datos);
         return $respuesta;
     }
-    /* ############################# Agregar usuario ############################# */
+
     static  public function ctrAgregarUsuario($datos)
     {
         unset($datos['accion']);
@@ -44,6 +92,14 @@ class ControladorUsuarios
         $id = $datos['id'];
         $respuesta = ModeloUsuario::mdlEliminarUsuario(self::$tabla, $id);
         return $respuesta;
+    }
+
+    public static function ctrCerrarSesion()
+    {
+        session_start();
+        session_unset();
+        session_destroy();
+        echo json_encode(['status' => 'success', 'message' => 'Sesión cerrada']);
     }
 }
 
@@ -67,4 +123,10 @@ if (isset($_POST['accion']) && $_POST['accion'] == 'nuevoUsuario') {
 if (isset($_POST['accion']) && $_POST['accion'] == 'eliminarUsuario') {
     $respuesta = ControladorUsuarios::ctrEliminarUsuario($_POST);
     echo json_encode($respuesta);
+}
+if (isset($_POST['accion']) && $_POST['accion'] == 'ingresoUsuario') {
+    $respuesta = ControladorUsuarios::ctrIngresoUsuario($_POST);
+}
+if (isset($_POST['accion']) && $_POST['accion'] == 'cerrarSesion') {
+    $respuesta = ControladorUsuarios::ctrCerrarSesion();
 }

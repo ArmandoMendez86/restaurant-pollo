@@ -125,6 +125,31 @@ $(document).ready(function () {
     let rowData = $("#tabVentas").DataTable().row(row).data();
 
     let idVenta = rowData.id;
+    let productos = JSON.parse(rowData.producto);
+
+    const cantidadProductos = productos.map((element) => {
+      if (
+        element.titulo == "pollo" ||
+        element.titulo == "sirloin" ||
+        element.titulo == "arrachera" ||
+        element.titulo == "costilla"
+      ) {
+        let cantidad = parseFloat(element.cantidad * element.porcion);
+        return {
+          producto: element.titulo,
+          almacen: cantidad,
+          unico: element.unico,
+        };
+      } else {
+        return {
+          producto: element.titulo,
+          almacen: element.cantidad,
+          unico: element.unico,
+        };
+      }
+    });
+
+    const restaurarAlmacen = JSON.stringify(cantidadProductos);
 
     $.ajax({
       url: "controladores/ordenes.controlador.php",
@@ -135,6 +160,19 @@ $(document).ready(function () {
       },
       success: function (respuesta) {
         reciboVentas.ajax.reload(null, false);
+
+        /* Restaurar inventario */
+        $.ajax({
+          url: "controladores/inventario.controlador.php",
+          type: "POST",
+          data: {
+            accion: "restaurarAlmacen",
+            restaurar: restaurarAlmacen,
+          },
+          success: function (respuesta) {
+            console.log(respuesta);
+          },
+        });
       },
     });
   });
@@ -358,7 +396,7 @@ $(document).ready(function () {
     const doc = new jsPDF({
       orientation: "portrait",
       unit: "mm",
-      format: [80, 297],
+      format: [50, 297],
     });
 
     let total = $(".precioTotalEdit").text();
@@ -412,7 +450,6 @@ $(document).ready(function () {
     doc.text(`Fecha: ${fecha}`, 5, 45);
     doc.text("Productos:", 5, 50);
 
-    // Usar el método `html` para insertar la tabla HTML en el PDF
     doc.html(productosHTML, {
       callback: function (doc) {
         // Guardar el PDF
@@ -420,7 +457,7 @@ $(document).ready(function () {
       },
       x: 5,
       y: 55,
-      html2canvas: { scale: 0.5 }, // Ajusta la escala si es necesario
+      html2canvas: { scale: 0.5 },
     });
 
     generarOrden(fechaFormat, numeroOrden, cliente, total, idRow);
@@ -500,7 +537,6 @@ $(document).ready(function () {
 
     productosHTML += `</tbody></table>`;
 
-    // Renderizar el encabezado en el PDF
     doc.setFont("helvetica", "bold");
     doc.setFontSize(18);
     doc.setTextColor(255, 0, 0);
@@ -515,7 +551,6 @@ $(document).ready(function () {
     doc.text(`Fecha: ${fechaFormat}`, 5, 45);
     doc.text("Productos:", 5, 50);
 
-    // Usar el método `html` para insertar la tabla HTML en el PDF
     doc.html(productosHTML, {
       callback: function (doc) {
         // Guardar el PDF
@@ -523,7 +558,7 @@ $(document).ready(function () {
       },
       x: 5,
       y: 55,
-      html2canvas: { scale: 0.5 }, // Ajusta la escala si es necesario
+      html2canvas: { scale: 0.5 },
     });
   });
 });

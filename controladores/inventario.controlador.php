@@ -22,11 +22,18 @@ class ControladorInventario
         $respuesta = ModeloInventario::mdlEditarInventario(self::$tabla, $datos);
         return $respuesta;
     }
-    /* ############################# Editar inventario ############################# */
+    /* ############################# Descontar inventario ############################# */
     static public function ctrDescontarInventario($datos)
     {
         unset($datos['accion']);
         $respuesta = ModeloInventario::mdlDescontarInventario(self::$tabla, $datos);
+        return $respuesta;
+    }
+    /* ############################# Editar inventario ############################# */
+    static public function ctrRestaurarInventario($datos)
+    {
+        unset($datos['accion']);
+        $respuesta = ModeloInventario::mdlRestaurarInventario(self::$tabla, $datos);
         return $respuesta;
     }
 }
@@ -43,5 +50,9 @@ if (isset($_POST['accion']) && $_POST['accion'] == 'editarInventario') {
 }
 if (isset($_POST['accion']) && $_POST['accion'] == 'descontarAlmacen') {
     $respuesta = ControladorInventario::ctrDescontarInventario($_POST);
+    //echo json_encode($respuesta);
+}
+if (isset($_POST['accion']) && $_POST['accion'] == 'restaurarAlmacen') {
+    $respuesta = ControladorInventario::ctrRestaurarInventario($_POST);
     //echo json_encode($respuesta);
 }

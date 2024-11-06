@@ -1600,7 +1600,7 @@ footer {
 }
 /* 28. best-solutions */
 .best-solutions {
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   display: flex;
   margin-bottom: 50px;

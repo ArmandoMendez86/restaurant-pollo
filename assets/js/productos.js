@@ -161,7 +161,7 @@ $(document).ready(function () {
     const doc = new jsPDF({
       orientation: "portrait",
       unit: "mm",
-      format: [80, 297],
+      format: [50, 297],
     });
 
     let total = $(".precioTotal").text();

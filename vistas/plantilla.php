@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -40,32 +43,32 @@
     <!-- end preloader -->
 
     <?php
-    /*  if (isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok") { */
+    if (isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"] == "ok") {
 
-    include "incluir/header.php";
+        include "incluir/header.php";
 
-    if (isset($_GET["ruta"])) {
-        if (
-            $_GET["ruta"] == "productos" || $_GET["ruta"] == "ventas" ||
-            $_GET["ruta"] == "menu" || $_GET["ruta"] == "inventario" ||
-            $_GET["ruta"] == "contabilidad" || $_GET["ruta"] == "usuarios" ||
-            $_GET["ruta"] == "login"
-        ) {
-            include $_GET["ruta"] . ".php";
+        if (isset($_GET["ruta"])) {
+            if (
+                $_GET["ruta"] == "productos" || $_GET["ruta"] == "ventas" ||
+                $_GET["ruta"] == "menu" || $_GET["ruta"] == "inventario" ||
+                $_GET["ruta"] == "contabilidad" || $_GET["ruta"] == "usuarios" ||
+                $_GET["ruta"] == "panel"
+            ) {
+                include $_GET["ruta"] . ".php";
+            } else {
+                include "404.php";
+            }
         } else {
-            include "404.php";
+            include "vistas/productos.php";
         }
     } else {
-        include "vistas/productos.php";
-    }
-    /*   } else {
         include "vistas/login.php";
-    } */
+    }
     ?>
 
 
 
-    <?php if (isset($_GET['ruta'])) : ?>
+    <?php if ($_GET['ruta'] !== "login"): ?>
         <footer>
             <div class="container">
                 <div class="footer-bootem">
@@ -107,6 +110,7 @@
     <script src="assets/js/inventario.js"></script>
     <script src="assets/js/contabilidad.js"></script>
     <script src="assets/js/usuarios.js"></script>
+    <script src="assets/js/login.js"></script>
 
 
 </body>

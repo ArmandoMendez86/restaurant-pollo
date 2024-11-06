@@ -45,6 +45,7 @@
                             </a>
                         </div>
                         <div class="register">
+                            <?php echo $_SESSION["nombre"] ?>
                             <i>
                                 <svg clip-rule="evenodd" fill-rule="evenodd" height="512" stroke-linejoin="round"
                                     stroke-miterlimit="2" viewBox="0 0 32 32" width="512">
@@ -63,7 +64,7 @@
                                         </path>
                                     </g>
                                 </svg>
-                            </i><a href="#!">Salir</a>
+                            </i><a href="#!" id="cerrarSesion">Salir</a>
                         </div>
                     </div>
                 </div>

@@ -26,32 +26,48 @@ class ModeloInventario
     }
     static public function mdlDescontarInventario($tabla, $datos)
     {
-        // Decodificar el JSON en un array de objetos
         $items = json_decode($datos['descontar'], true);
 
-        // Verificar si la decodificación fue exitosa
         if (!is_array($items)) {
             return 'error: datos no válidos';
         }
 
-        // Conexión a la base de datos
         $conn = Conexion::conectar();
 
-        // Iterar sobre cada objeto y actualizar la tabla
         foreach ($items as $item) {
-            // Preparar la consulta
             $stmt = $conn->prepare("UPDATE $tabla SET  almacen = almacen - :almacen WHERE producto = :producto AND unico = :unico");
 
             $stmt->bindParam(":producto", $item["producto"], PDO::PARAM_STR);
             $stmt->bindParam(":almacen", $item["almacen"], PDO::PARAM_STR);
             $stmt->bindParam(":unico", $item["unico"], PDO::PARAM_STR);
 
-            // Ejecutar la consulta y verificar el resultado
             if (!$stmt->execute()) {
                 return 'error: fallo en la actualización';
             }
         }
 
+        return 'ok';
+    }
+    static public function mdlRestaurarInventario($tabla, $datos)
+    {
+        $items = json_decode($datos['restaurar'], true);
+        if (!is_array($items)) {
+            return 'error: datos no válidos';
+        }
+
+        $conn = Conexion::conectar();
+        foreach ($items as $item) {
+
+            $stmt = $conn->prepare("UPDATE $tabla SET  almacen = almacen + :almacen WHERE producto = :producto AND unico = :unico");
+
+            $stmt->bindParam(":producto", $item["producto"], PDO::PARAM_STR);
+            $stmt->bindParam(":almacen", $item["almacen"], PDO::PARAM_STR);
+            $stmt->bindParam(":unico", $item["unico"], PDO::PARAM_STR);
+
+            if (!$stmt->execute()) {
+                return 'error: fallo en la actualización';
+            }
+        }
         return 'ok';
     }
 }
