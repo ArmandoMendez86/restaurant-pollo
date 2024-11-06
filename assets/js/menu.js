@@ -264,4 +264,81 @@ $(document).ready(function () {
       },
     });
   });
+
+  // Evento para hacer editable la celda "Cantidad"
+  $(document).on("click", ".btn-addAlmacen", function (e) {
+    e.preventDefault();
+
+    // Obtén la fila específica donde se hizo clic
+    let row = $(this).closest("tr");
+
+    
+
+    // Haz editable solo la celda "Cantidad" de esa fila
+    let cantidadCell = row.find(".cantidad");
+
+    cantidadCell.attr("contenteditable", "true");
+    cantidadCell.focus(); // Focaliza la celda para que el usuario pueda empezar a editar
+
+    // Muestra el botón de check y oculta el botón de editar
+    row.find(".btn-confi").show();
+    $(this).hide();
+  });
+
+  // Evento para desactivar la edición de la celda "Cantidad"
+  $(document).on("click", ".btn-confi", function (e) {
+    e.preventDefault();
+
+    // Obtén la fila específica donde se hizo clic
+    let row = $(this).closest("tr");
+
+    // Desactiva la edición de la celda "Cantidad" de esa fila
+    let cantidadCell = row.find(".cantidad");
+    cantidadCell.removeAttr("contenteditable");
+
+    // Oculta el botón de check y muestra el botón de editar
+    row.find(".btn-addAlmacen").show();
+    $(this).hide();
+  });
+
+  $("#almacen").click(() => {
+    listaAlmacen();
+  });
+
+  function listaAlmacen() {
+    $.ajax({
+      url: "controladores/productos.controlador.php",
+      type: "GET",
+      data: {
+        accion: "obtenerProductos",
+      },
+      success: function (respuesta) {
+        let lista = JSON.parse(respuesta);
+        let plantilla = "";
+  
+        lista.forEach((element) => {
+          plantilla += `
+            <tr>
+              <td class="d-none">${element.id}</td>
+              <td>${element.producto}</td>
+              <td class="cantidad text-center">${element.exis}</td>
+              <td class="text-center">${element.unidad}</td>
+              <td class="align-middle text-center dt-center">
+                  <div class="d-flex justify-content-center align-items-center">
+                      <button type="button" class="btn btn-addAlmacen">
+                          <i class="fa fa-pencil text-secondary" aria-hidden="true" style="font-size:1.5rem;"></i>
+                      </button>
+                      <button type="button" class="btn btn-confi" style="display: none;">
+                          <i class="fa fa-check text-success" aria-hidden="true" style="font-size:1.5rem;"></i>
+                      </button>
+                  </div>
+              </td>
+            </tr>
+          `;
+        });
+  
+        $("#listaAlmacen").html(plantilla);
+      },
+    });
+  }
 });

@@ -15,20 +15,10 @@ class ModeloOrdenes
     {
         $monto = str_replace(['$', ','], '', $datos['total']);
         $montoFloat = floatval($monto);
-
-        // Conectar a la base de datos usando PDO
         $pdo = Conexion::conectar();
-
-        // Especificar los nombres de las columnas
         $columns = "producto, fecha, n_orden, empleado, cliente, total";
-
-        // Preparar la consulta SQL
         $sql = "INSERT INTO $tabla ($columns) VALUES (?, ?, ?, ?, ?, ?)";
-
-        // Preparar la consulta
         $stmt = $pdo->prepare($sql);
-
-        // Configurar los valores (producto es el JSON como texto)
         $values = [
             $datos['producto'],
             $datos['fecha'],
@@ -38,21 +28,20 @@ class ModeloOrdenes
             $montoFloat
         ];
 
-        // Ejecutar la consulta con los valores
+
         if ($stmt->execute($values)) {
-            return 'ok';  // Si la inserción fue exitosa
+            return 'ok';
         } else {
-            return 'error';  // Si algo salió mal
+            return 'error';
         }
     }
 
     static public function mdlContabilidadProductos($datos)
     {
         $pdo = Conexion::conectar();
-        $productos = $datos['producto'];
+        $productos = $datos['contabilidad'];
 
         $productos = json_decode($productos, true);
-
 
         if (is_array($productos)) {
 

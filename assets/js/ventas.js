@@ -144,11 +144,13 @@ $(document).ready(function () {
     e.preventDefault();
     let row = $(this).closest("tr");
     let rowData = $("#tabVentas").DataTable().row(row).data();
+
     idRow = rowData.id;
     let cliente = $("#nombreClienteEdit").val(rowData.cliente);
     let numeroOrden = $("#ordenEdit").text(rowData.n_orden);
 
     let productos = JSON.parse(rowData.producto);
+
     articulosCarrito = productos;
     carritoHTML();
     actualizarTotal();

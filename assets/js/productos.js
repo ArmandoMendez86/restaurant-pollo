@@ -53,6 +53,7 @@ $(document).ready(function () {
                         ? item.descripcion
                         : item.producto
                     }</h3>
+                    <h4 hidden>${item.unico}</h4>
                     <h2 hidden>${item.producto}</h2>
                     <h5 hidden>${item.porcion}</h5>
                     <h6 hidden>${item.unidad}</h6>
@@ -262,6 +263,7 @@ $(document).ready(function () {
       porcion: item.querySelector("h5").textContent,
       precio: item.querySelector("span").textContent,
       unidad: item.querySelector("h6").textContent,
+      unico: item.querySelector("h4").textContent,
       cantidad: 1,
       especialidad: item.querySelector("#especialidad").value,
       imagen: item.querySelector("img").src,
@@ -389,12 +391,63 @@ $(document).ready(function () {
   function generarOrden(fecha, numeroOrden, cliente, total) {
     let productos = JSON.stringify(articulosCarrito);
 
+    const productosMod = articulosCarrito.map((element) => {
+      if (
+        element.titulo == "pollo" ||
+        element.titulo == "sirloin" ||
+        element.titulo == "arrachera" ||
+        element.titulo == "costilla"
+      ) {
+        let cantidad = parseFloat(element.cantidad * element.porcion);
+        return {
+          id: element.id,
+          especialidad: element.especialidad,
+          cantidad: cantidad,
+          fecha: fecha,
+        };
+      } else {
+        return {
+          id: element.id,
+          especialidad: element.especialidad,
+          cantidad: element.cantidad,
+          fecha: fecha,
+        };
+      }
+    });
+
+    const tabContabilidad = JSON.stringify(productosMod);
+
+    const cantidadProductos = articulosCarrito.map((element) => {
+      if (
+        element.titulo == "pollo" ||
+        element.titulo == "sirloin" ||
+        element.titulo == "arrachera" ||
+        element.titulo == "costilla"
+      ) {
+        let cantidad = parseFloat(element.cantidad * element.porcion);
+        return {
+          producto: element.titulo,
+          almacen: cantidad,
+          unico: element.unico,
+        };
+      } else {
+        return {
+          producto: element.titulo,
+          almacen: element.cantidad,
+          unico: element.unico,
+        };
+      }
+    });
+
+    const descontarAlmacen = JSON.stringify(cantidadProductos);
+
     $.ajax({
       url: "controladores/ordenes.controlador.php",
       type: "POST",
       data: {
         accion: "crearOrden",
         producto: productos,
+        contabilidad: tabContabilidad,
         n_orden: numeroOrden,
         empleado: "oswaldo",
         fecha: fecha,
@@ -403,6 +456,20 @@ $(document).ready(function () {
       },
       success: function (respuesta) {
         alertify.success("Orden registrada!");
+
+        /* Actulizando el almacen */
+
+        $.ajax({
+          url: "controladores/inventario.controlador.php",
+          type: "POST",
+          data: {
+            accion: "descontarAlmacen",
+            descontar: descontarAlmacen,
+          },
+          success: function (respuesta) {
+            console.log(respuesta);
+          },
+        });
       },
     });
   }
