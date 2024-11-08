@@ -52,7 +52,7 @@ session_start();
                 $_GET["ruta"] == "productos" || $_GET["ruta"] == "ventas" ||
                 $_GET["ruta"] == "menu" || $_GET["ruta"] == "inventario" ||
                 $_GET["ruta"] == "contabilidad" || $_GET["ruta"] == "usuarios" ||
-                $_GET["ruta"] == "panel"
+                $_GET["ruta"] == "panel" || $_GET["ruta"] == "gastos"
             ) {
                 include $_GET["ruta"] . ".php";
             } else {
@@ -68,7 +68,7 @@ session_start();
 
 
 
-    <?php if ($_GET['ruta'] !== "login"): ?>
+    <?php if ($_GET['ruta'] !== "login" && $_GET['ruta'] !== "panel"): ?>
         <footer>
             <div class="container">
                 <div class="footer-bootem">
@@ -111,6 +111,8 @@ session_start();
     <script src="assets/js/contabilidad.js"></script>
     <script src="assets/js/usuarios.js"></script>
     <script src="assets/js/login.js"></script>
+    <script src="assets/js/gastos.js"></script>
+    <script src="assets/js/panel.js"></script>
 
 
 </body>

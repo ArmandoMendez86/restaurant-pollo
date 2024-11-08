@@ -43,7 +43,7 @@ $(document).ready(function () {
             `   <div class="fast-food-menus">
                     <div class="fast-food-img">
                      <img alt="fast-food-img" src="${item.img}">
-                </div>
+                    </div>
                 <div>
                 <button type="button" class="apply-coupon rounded-circle" style="width:50px;height:50px;padding:8px;position:absolute;top:5px;right:10px;font-size:13px;" value="${porcion}">${porcion}${
               item.unidad
@@ -169,19 +169,20 @@ $(document).ready(function () {
     let fecha = moment().format("DD/MM/YYYY H:mm:ss");
     let fechaFormat = moment().format("YYYY-MM-DD H:mm:ss");
     let numOrden = generarIdVenta();
+    let empleado = $("#nameSesion").text();
 
     if (cliente == "") return;
 
     let productosHTML = `<table style="width:100%; font-size:6px;border-collapse: collapse;">
       <thead>
           <tr>
-              <th style="text-align:center; border-bottom: 1px solid #000;">N°</th>
-              <th style="text-align:center; border-bottom: 1px solid #000;">Prod.</th>
-              <th style="text-align:center; border-bottom: 1px solid #000;">Porción</th>
-              <th style="text-align:center; border-bottom: 1px solid #000;">Unid.</th>
-              <th style="text-align:center; border-bottom: 1px solid #000;">Cant.</th>
-              <th style="text-align:center; border-bottom: 1px solid #000;">Precio</th>
-              <th style="text-align:center; border-bottom: 1px solid #000;">Sub.</th>
+              <th style="text-align:center; border-bottom: 1px solid #000;padding:1px;">N°</th>
+              <th style="text-align:center; border-bottom: 1px solid #000;padding:1px;">Prod.</th>
+              <th style="text-align:center; border-bottom: 1px solid #000;padding:1px;">Porción</th>
+              <th style="text-align:center; border-bottom: 1px solid #000;padding:1px;">Unid.</th>
+              <th style="text-align:center; border-bottom: 1px solid #000;padding:1px;">Cant.</th>
+              <th style="text-align:center; border-bottom: 1px solid #000;padding:1px;">Precio</th>
+              <th style="text-align:center; border-bottom: 1px solid #000;padding:1px;">Sub.</th>
           </tr>
       </thead>
       <tbody>`;
@@ -202,28 +203,29 @@ $(document).ready(function () {
     productosHTML += `</tbody></table>`;
 
     doc.setFont("helvetica", "bold");
-    doc.setFontSize(18);
+    doc.setFontSize(10);
     doc.setTextColor(255, 0, 0);
-    doc.text(`Orden N°. ${numOrden}`, 17, 20);
+    doc.text(`Orden N°. ${numOrden}`, 10, 18);
 
-    doc.setFontSize(11);
-    doc.setTextColor(0, 0, 0);
-    doc.text(`Total:${total}`, 45, 30);
     doc.setFontSize(8);
-    doc.text(`Atendió: xxxxx`, 5, 30);
-    doc.text(`Cliente: ${cliente}`, 5, 40);
-    doc.text(`Fecha: ${fecha}`, 5, 45);
-    doc.text("Productos:", 5, 50);
+    doc.setTextColor(0, 0, 0);
+    doc.text(`Total:${total}`, 27, 30);
+
+    doc.setFontSize(7);
+    doc.text(`Atendió: ${empleado}`, 1, 30);
+    doc.text(`Cliente: ${cliente}`, 1, 40);
+    doc.text(`Fecha: ${fecha}`, 1, 43);
+    doc.text("Pedido:", 1, 50);
 
     doc.html(productosHTML, {
       callback: function (doc) {
         doc.save(`${numOrden}.pdf`);
       },
-      x: 5,
+      x: 1,
       y: 55,
-      html2canvas: { scale: 0.5 },
+      html2canvas: { scale: 0.35 },
     });
-    generarOrden(fechaFormat, numOrden, cliente, total);
+    generarOrden(fechaFormat, numOrden, cliente, total, empleado);
   });
 
   /* ############################# Eliminar orden ############################# */
@@ -317,7 +319,7 @@ $(document).ready(function () {
       li.innerHTML = `
                 <div class="d-flex align-items-center position-relative justify-content-around item-li-p">
                 <div class="p-img light-bg">
-                    <img src="${item.imagen}" alt="Product Image">
+                    <img src="${item.imagen}" class="rounded-circle" alt="Product Image">
                 </div>
                 <div class="p-data">
                 <span hidden>${item.especialidad}</span
@@ -388,7 +390,7 @@ $(document).ready(function () {
   }
 
   /* ############################# Registrar orden ############################# */
-  function generarOrden(fecha, numeroOrden, cliente, total) {
+  function generarOrden(fecha, numeroOrden, cliente, total, empleado) {
     let productos = JSON.stringify(articulosCarrito);
 
     const productosMod = articulosCarrito.map((element) => {
@@ -430,6 +432,17 @@ $(document).ready(function () {
           almacen: cantidad,
           unico: element.unico,
         };
+      } else if (
+        element.titulo == "papa/arrach" ||
+        element.titulo == "papa/sirloin"
+      ) {
+        let cantidad = parseFloat(element.cantidad * 0.12);
+        return {
+          producto: element.titulo,
+          almacen: cantidad,
+          unico: element.unico,
+          cantidad: element.cantidad,
+        };
       } else {
         return {
           producto: element.titulo,
@@ -449,7 +462,7 @@ $(document).ready(function () {
         producto: productos,
         contabilidad: tabContabilidad,
         n_orden: numeroOrden,
-        empleado: "oswaldo",
+        empleado: empleado,
         fecha: fecha,
         cliente: cliente,
         total: total,

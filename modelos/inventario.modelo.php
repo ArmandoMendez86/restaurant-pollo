@@ -24,8 +24,10 @@ class ModeloInventario
             return 'error';
         }
     }
+
     static public function mdlDescontarInventario($tabla, $datos)
     {
+
         $items = json_decode($datos['descontar'], true);
 
         if (!is_array($items)) {
@@ -33,21 +35,57 @@ class ModeloInventario
         }
 
         $conn = Conexion::conectar();
+        $stmt = '';
 
         foreach ($items as $item) {
-            $stmt = $conn->prepare("UPDATE $tabla SET  almacen = almacen - :almacen WHERE producto = :producto AND unico = :unico");
+            // Descuento específico para papa/arrach
+            if ($item['producto'] == 'p/arrach') {
+                // Actualizar arrachera
+                $stmt = $conn->prepare("UPDATE $tabla SET almacen = almacen - :almacen WHERE producto = 'arrachera'");
+                $stmt->bindParam(":almacen", $item["almacen"], PDO::PARAM_STR);
+                if (!$stmt->execute()) {
+                    return 'error: fallo en la actualización de arrachera';
+                }
 
-            $stmt->bindParam(":producto", $item["producto"], PDO::PARAM_STR);
-            $stmt->bindParam(":almacen", $item["almacen"], PDO::PARAM_STR);
-            $stmt->bindParam(":unico", $item["unico"], PDO::PARAM_STR);
+                // Actualizar papa
+                $stmt = $conn->prepare("UPDATE $tabla SET almacen = almacen - :cantidad WHERE producto = 'papa'");
+                $stmt->bindParam(":cantidad", $item["cantidad"], PDO::PARAM_STR);
+                if (!$stmt->execute()) {
+                    return 'error: fallo en la actualización de papa para papa/arrach';
+                }
+            }
+            // Descuento específico para papa/sirloin
+            else if ($item['producto'] == 'p/sirloin') {
+                // Actualizar sirloin
+                $stmt = $conn->prepare("UPDATE $tabla SET almacen = almacen - :almacen WHERE producto = 'sirloin'");
+                $stmt->bindParam(":almacen", $item["almacen"], PDO::PARAM_STR);
+                if (!$stmt->execute()) {
+                    return 'error: fallo en la actualización de sirloin';
+                }
 
-            if (!$stmt->execute()) {
-                return 'error: fallo en la actualización';
+                // Actualizar papa
+                $stmt = $conn->prepare("UPDATE $tabla SET almacen = almacen - :cantidad WHERE producto = 'papa'");
+                $stmt->bindParam(":cantidad", $item["cantidad"], PDO::PARAM_STR);
+                if (!$stmt->execute()) {
+                    return 'error: fallo en la actualización de papa para papa/sirloin';
+                }
+            }
+            // Descuento para otros productos
+            else {
+                $stmt = $conn->prepare("UPDATE $tabla SET almacen = almacen - :almacen WHERE producto = :producto AND unico = :unico");
+                $stmt->bindParam(":producto", $item["producto"], PDO::PARAM_STR);
+                $stmt->bindParam(":almacen", $item["almacen"], PDO::PARAM_STR);
+                $stmt->bindParam(":unico", $item["unico"], PDO::PARAM_STR);
+                if (!$stmt->execute()) {
+                    return 'error: fallo en la actualización de otros productos';
+                }
             }
         }
 
         return 'ok';
     }
+
+
     static public function mdlRestaurarInventario($tabla, $datos)
     {
         $items = json_decode($datos['restaurar'], true);

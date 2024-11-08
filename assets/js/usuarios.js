@@ -48,7 +48,7 @@ $(document).ready(function () {
     columnDefs: [
       { targets: 0, className: "align-middle text-center" },
       { targets: 1, className: "align-middle text-center" },
-      { targets: 2, className: "align-middle" },
+      { targets: 2, className: "align-middle text-center" },
       { targets: 3, className: "align-middle text-center" },
       { targets: 4, className: "align-middle text-center" },
       { targets: 5, className: "align-middle text-center" },

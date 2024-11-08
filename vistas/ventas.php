@@ -41,21 +41,21 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="staticBackdropLabel">Editar orden N.° <span id="ordenEdit"></span></h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                         </div>
-                        <div class="modal-body d-flex">
+                        <div class="modal-body d-flex justify-content-around">
 
                             <!-- Lista de menu -->
-                            <di>
-                                <div class="delicious-menu">
-                                    <h3>Menu</h3>
-                                    <div class="line"></div>
-                                    <ul class="menu-items"></ul>
-                                </div>
-                            </di>
+
+                            <div class="delicious-menu">
+                                <h5>Menu</h5>
+                                <div class="line"></div>
+                                <ul class="menu-items"></ul>
+                            </div>
+
 
                             <!-- Carrito de compras -->
-                            <div class="cart-popup show-cart">
+                            <div class="cart-popup show-cart p-4">
                                 <ul id="lista-items-edit"></ul>
 
                                 <div class="cart-total d-flex align-items-center justify-content-between">
@@ -67,18 +67,12 @@
                                         <span class="input-group-text">Nombre</span>
                                     </div>
                                     <input type="text" aria-label="nombre" class="form-control" id="nombreClienteEdit">
-                                    <!-- <input type="text" aria-label="Last name" class="form-control"> -->
                                 </div>
                                 <div class="cart-btns d-flex align-items-center justify-content-center mt-2">
-                                    <!-- <a id="vaciar-carrito" class="font-bold" href="#!">Vaciar</a> -->
                                     <a class="font-bold theme-bg-clr text-white checkout" href="#!" id="ticketEdit" style="pointer-events: auto;">Guardar</a>
                                 </div>
                             </div>
                         </div>
-                        <!--  <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="button" class="btn btn-primary btn-guardar-edit">Guardar cambios</button>
-                        </div> -->
                     </div>
                 </div>
             </div>

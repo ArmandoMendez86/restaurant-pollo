@@ -31,6 +31,12 @@ class ControladorOrdenes
         $respuesta = ModeloOrdenes::mdlEditarOrden(self::$tabla, $datos);
         return $respuesta;
     }
+
+    static public function ctrTotalVenta()
+    {
+        $respuesta = ModeloOrdenes::mdlTotalVenta(self::$tabla);
+        return $respuesta;
+    }
 }
 
 
@@ -50,5 +56,9 @@ if (isset($_POST['accion']) && $_POST['accion'] == 'eliminarOrden') {
 }
 if (isset($_POST['accion']) && $_POST['accion'] == 'editarOrden') {
     $respuesta = ControladorOrdenes::ctrEditarOrden($_POST);
+    echo json_encode($respuesta);
+}
+if (isset($_POST['accion']) && $_POST['accion'] == 'totalVentaOrdenes') {
+    $respuesta = ControladorOrdenes::ctrTotalVenta();
     echo json_encode($respuesta);
 }

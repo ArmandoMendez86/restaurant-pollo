@@ -7,29 +7,27 @@ class ControladorInventario
 
     static public $tabla = "inventario";
 
-    /* ############################# Obetner inventario ############################# */
+
     static public function ctrObtenerInventario()
     {
         $respuesta = ModeloInventario::mdlObtenerInventario(self::$tabla);
         return $respuesta;
     }
 
-
-    /* ############################# Editar inventario ############################# */
     static public function ctrEditarInventario($datos)
     {
         unset($datos['accion']);
         $respuesta = ModeloInventario::mdlEditarInventario(self::$tabla, $datos);
         return $respuesta;
     }
-    /* ############################# Descontar inventario ############################# */
+
     static public function ctrDescontarInventario($datos)
     {
         unset($datos['accion']);
         $respuesta = ModeloInventario::mdlDescontarInventario(self::$tabla, $datos);
         return $respuesta;
     }
-    /* ############################# Editar inventario ############################# */
+
     static public function ctrRestaurarInventario($datos)
     {
         unset($datos['accion']);

@@ -1,4 +1,5 @@
 <?php
+date_default_timezone_set('America/Mexico_City');
 require_once 'conexion.php';
 
 class ModeloOrdenes
@@ -6,7 +7,7 @@ class ModeloOrdenes
 
     static public function mdlObtenerOrdenes($tabla)
     {
-        $stmt = Conexion::conectar()->prepare("SELECT * FROM venta_dos");
+        $stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -98,5 +99,15 @@ class ModeloOrdenes
         } else {
             return 'error';
         }
+    }
+
+    static public function mdlTotalVenta($tabla)
+    {
+        $fecha_actual = '2024-11-07';
+        $stmt = Conexion::conectar()->prepare("SELECT SUM(total) AS total_monto
+        FROM $tabla
+        WHERE DATE(fecha) = '$fecha_actual'");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }

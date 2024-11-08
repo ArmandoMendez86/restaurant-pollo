@@ -45,7 +45,8 @@
                             </a>
                         </div>
                         <div class="register">
-                            <?php echo $_SESSION["nombre"] ?>
+                            <span id="nameSesion"><?php echo $_SESSION["nombre"] ?></span>
+                            <span id="rol" hidden><?php echo $_SESSION["rol"] ?></span>
                             <i>
                                 <svg clip-rule="evenodd" fill-rule="evenodd" height="512" stroke-linejoin="round"
                                     stroke-miterlimit="2" viewBox="0 0 32 32" width="512">
@@ -104,23 +105,28 @@
                                 <a href="#!">Ventas</a>
                                 <div class="dropdown">
                                     <a href="./ventas">Tickets</a>
-                                    <a href="./productos">Pedidos</a>
+                                    <a href="./productos">Venta</a>
+                                    <a href="./gastos">Gastos</a>
                                 </div>
                             </li>
-                            <li class="navbar-dropdown">
-                                <a href="#!">Administración</a>
-                                <div class="dropdown">
-                                    <a href="./menu">Menu</a>
-                                    <a href="./inventario">Inventario</a>
-                                    <a href="./contabilidad">Contabilidad</a>
-                                </div>
-                            </li>
-                            <li class="navbar-dropdown">
-                                <a href="#!">Roles</a>
-                                <div class="dropdown">
-                                    <a href="./usuarios">Usuarios</a>
-                                </div>
-                            </li>
+
+                            <?php if ($_SESSION["rol"] == 'admin') : ?>
+                                <li class="navbar-dropdown">
+                                    <a href="#!">Administración</a>
+                                    <div class="dropdown">
+                                        <a href="./menu">Menu</a>
+                                        <a href="./inventario">Inventario</a>
+                                        <a href="./contabilidad">Contabilidad</a>
+                                        <a href="./panel">Panel</a>
+                                    </div>
+                                </li>
+                                <li class="navbar-dropdown">
+                                    <a href="#!">Roles</a>
+                                    <div class="dropdown">
+                                        <a href="./usuarios">Usuarios</a>
+                                    </div>
+                                </li>
+                            <?php endif  ?>
                         </ul>
                     </nav>
                 </div>
@@ -170,9 +176,9 @@
         <ul>
             <li class="menu-item-has-children"><a href="JavaScript:void(0)">Ventas</a>
                 <ul class="sub-menu">
-
                     <li><a href="./ventas">Tickets</a></li>
-                    <li><a href="./productos">Pedidos</a></li>
+                    <li><a href="./productos">Venta</a></li>
+                    <li><a href="./gastos">Gastos</a></li>
                 </ul>
             </li>
             <li class="menu-item-has-children"><a href="JavaScript:void(0)">Administración</a>
@@ -180,6 +186,7 @@
                     <li><a href="./menu">menu</a></li>
                     <li><a href="./inventario">Inventario</a></li>
                     <li><a href="./contabilidad">Contabilidad</a></li>
+                    <li><a href="./panel">Panel</a></li>
                 </ul>
             </li>
         </ul>
