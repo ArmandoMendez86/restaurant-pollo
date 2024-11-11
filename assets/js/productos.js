@@ -397,7 +397,7 @@ $(document).ready(function () {
       if (
         element.titulo == "pollo" ||
         element.titulo == "sirloin" ||
-        element.titulo == "arrachera" ||
+        element.titulo == "arrach." ||
         element.titulo == "costilla"
       ) {
         let cantidad = parseFloat(element.cantidad * element.porcion);
@@ -423,7 +423,7 @@ $(document).ready(function () {
       if (
         element.titulo == "pollo" ||
         element.titulo == "sirloin" ||
-        element.titulo == "arrachera" ||
+        element.titulo == "arrach." ||
         element.titulo == "costilla"
       ) {
         let cantidad = parseFloat(element.cantidad * element.porcion);
@@ -433,8 +433,8 @@ $(document).ready(function () {
           unico: element.unico,
         };
       } else if (
-        element.titulo == "papa/arrach" ||
-        element.titulo == "papa/sirloin"
+        element.titulo == "p/arrach" ||
+        element.titulo == "p/sirloin"
       ) {
         let cantidad = parseFloat(element.cantidad * 0.12);
         return {

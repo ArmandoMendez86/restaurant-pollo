@@ -103,7 +103,7 @@ class ModeloOrdenes
 
     static public function mdlTotalVenta($tabla)
     {
-        $fecha_actual = '2024-11-07';
+        $fecha_actual = date('Y-m-d');
         $stmt = Conexion::conectar()->prepare("SELECT SUM(total) AS total_monto
         FROM $tabla
         WHERE DATE(fecha) = '$fecha_actual'");

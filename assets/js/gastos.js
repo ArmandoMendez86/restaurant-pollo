@@ -15,7 +15,7 @@ $(document).ready(function () {
       [5, 10, 15, -1],
       [5, 10, 15, "Todos"],
     ],
-    order: [[3, "desc"]],
+    order: [[4, "desc"]],
     columns: [
       { data: "id", visible: false },
       { data: "concepto" },
@@ -32,6 +32,7 @@ $(document).ready(function () {
           });
         },
       },
+      { data: "tipo", visible: false },
       {
         data: "fecha",
         render: function (data, type, row) {
@@ -41,8 +42,21 @@ $(document).ready(function () {
       {
         data: null,
         className: "dt-center",
-        defaultContent:
-          '<div class="d-flex justify-content-center align-items-center"><button type="button" class="btn btn-editGasto" data-bs-toggle="modal" data-bs-target="#gastos"><i class="fa fa-pencil text-secondary" aria-hidden="true" style="font-size:1.5rem;"></i></button><button type="button" class="btn btn-deletGasto"><i class="fa fa-times text-secondary" aria-hidden="true" style="font-size:1.5rem;"></i></button></div>',
+        render: function (data, type, row) {
+          // Acceder al valor de 'tipo' desde el objeto 'row'
+          let eliminarBtn =
+            row.concepto === "caja"
+              ? ""
+              : '<button type="button" class="btn btn-deletGasto"><i class="fa fa-times text-secondary" aria-hidden="true" style="font-size:1.5rem;"></i></button>';
+
+          // Generar el contenido HTML con el botón de eliminar condicionado
+          return `<div class="d-flex justify-content-center align-items-center">
+                    <button type="button" class="btn btn-editGasto" data-bs-toggle="modal" data-bs-target="#gastos">
+                      <i class="fa fa-pencil text-secondary" aria-hidden="true" style="font-size:1.5rem;"></i>
+                    </button>
+                    ${eliminarBtn}
+                  </div>`;
+        },
         orderable: false,
       },
     ],
@@ -52,6 +66,7 @@ $(document).ready(function () {
       { targets: 1, className: "align-middle text-start" },
       { targets: 2, className: "align-middle text-center" },
       { targets: 3, className: "align-middle text-center" },
+      { targets: 4, className: "align-middle text-center" },
     ],
 
     footerCallback: function (row, data, start, end, display) {
@@ -99,10 +114,12 @@ $(document).ready(function () {
 
     let id = rowData.id;
     let concepto = rowData.concepto;
+    let tipo = rowData.tipo;
     let monto = rowData.monto;
 
     $("#idGasto").val(id);
     $("#concepto").val(concepto);
+    $("#tipoGasto").val(tipo);
     $("#monto").val(monto);
   });
 
@@ -114,6 +131,7 @@ $(document).ready(function () {
     datos.append("id", $("#idGasto").val());
     datos.append("concepto", $("#concepto").val());
     datos.append("monto", $("#monto").val());
+    datos.append("tipo", $("#tipoGasto").val());
     datos.append("fecha", fecha);
 
     $.ajax({
@@ -136,12 +154,14 @@ $(document).ready(function () {
   $(document).on("click", "#agregarGasto", function () {
     let concepto = $.trim($("#concepto").val()).toLowerCase();
     let monto = $("#monto").val();
+    let tipo = $("#tipoGasto").val();
     let fecha = moment().format("YYYY-MM-DD H:mm:ss");
 
     let datos = new FormData();
     datos.append("accion", "agregarGasto");
     datos.append("concepto", concepto);
     datos.append("monto", monto);
+    datos.append("tipo", tipo);
     datos.append("fecha", fecha);
 
     $.ajax({

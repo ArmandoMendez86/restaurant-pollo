@@ -43,7 +43,7 @@
                             <h5 class="modal-title" id="staticBackdropLabel">Editar orden N.° <span id="ordenEdit"></span></h5>
                             <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
                         </div>
-                        <div class="modal-body d-flex justify-content-around">
+                        <div class="modal-body d-flex justify-content-around flex-wrap">
 
                             <!-- Lista de menu -->
 

@@ -55,6 +55,8 @@ session_start();
                 $_GET["ruta"] == "panel" || $_GET["ruta"] == "gastos"
             ) {
                 include $_GET["ruta"] . ".php";
+
+                include "incluir/footer.php";
             } else {
                 include "404.php";
             }
@@ -68,21 +70,7 @@ session_start();
 
 
 
-    <?php if ($_GET['ruta'] !== "login" && $_GET['ruta'] !== "panel"): ?>
-        <footer>
-            <div class="container">
-                <div class="footer-bootem">
-                    <h6><span>© 2023 Tio pollo express</span> | Restaurant</h6>
-                    <div class="header-social-media">
-                        <a href="#!">Facebook</a>
-                        <a href="#!">Twitter</a>
-                        <a href="#!">Instagram</a>
-                        <a href="#!">Youtube</a>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    <?php endif  ?>
+
     <!-- progress -->
     <div id="progress" style="display: grid; background: conic-gradient(rgb(243, 39, 76) 34%, rgb(215, 215, 215) 34%);">
         <span id="progress-value"><i class="fa fa-arrow-up"></i></span>

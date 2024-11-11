@@ -41,7 +41,7 @@ class ModeloInventario
             // Descuento específico para papa/arrach
             if ($item['producto'] == 'p/arrach') {
                 // Actualizar arrachera
-                $stmt = $conn->prepare("UPDATE $tabla SET almacen = almacen - :almacen WHERE producto = 'arrachera'");
+                $stmt = $conn->prepare("UPDATE $tabla SET almacen = almacen - :almacen WHERE producto = 'arrach.'");
                 $stmt->bindParam(":almacen", $item["almacen"], PDO::PARAM_STR);
                 if (!$stmt->execute()) {
                     return 'error: fallo en la actualización de arrachera';

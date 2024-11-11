@@ -39,6 +39,12 @@ class ControladorGasto
         $respuesta = ModeloGasto::mdlTotalGasto(self::$tabla);
         return $respuesta;
     }
+
+    static public function ctrCaja()
+    {
+        $respuesta = ModeloGasto::mdlCaja(self::$tabla);
+        return $respuesta;
+    }
 }
 
 
@@ -59,5 +65,9 @@ if (isset($_POST['accion']) && $_POST['accion'] == 'eliminarGasto') {
 }
 if (isset($_POST['accion']) && $_POST['accion'] == 'obtenerTotalGasto') {
     $respuesta = ControladorGasto::ctrTotalGasto();
+    echo json_encode($respuesta);
+}
+if (isset($_POST['accion']) && $_POST['accion'] == 'obtenerCaja') {
+    $respuesta = ControladorGasto::ctrCaja();
     echo json_encode($respuesta);
 }

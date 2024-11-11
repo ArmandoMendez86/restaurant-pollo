@@ -124,12 +124,13 @@ $(document).ready(function () {
 
     let idVenta = rowData.id;
     let productos = JSON.parse(rowData.producto);
+   
 
     const cantidadProductos = productos.map((element) => {
       if (
         element.titulo == "pollo" ||
         element.titulo == "sirloin" ||
-        element.titulo == "arrachera" ||
+        element.titulo == "arrach." ||
         element.titulo == "costilla"
       ) {
         let cantidad = parseFloat(element.cantidad * element.porcion);
@@ -146,6 +147,7 @@ $(document).ready(function () {
         };
       }
     });
+
 
     const restaurarAlmacen = JSON.stringify(cantidadProductos);
 
@@ -206,7 +208,7 @@ $(document).ready(function () {
         menu.forEach((element) => {
           html += `
           <li>
-            <div class="delicious">
+            <div class="delicious" data-unico = ${element.unico}>
                 <img class="rounded-circle" src="${
                   element.img
                 }" alt="Product Image" style="width:50px;">
@@ -288,6 +290,59 @@ $(document).ready(function () {
 
     carritoHTML();
     actualizarTotal();
+
+    const producto = item.querySelector("h6").textContent;
+    let porcion = item.querySelector("h1").textContent;
+    let unico =item.querySelector(".delicious").getAttribute("data-unico");
+  
+
+    /* Logica para mandar a actualizar del almacen */
+    let objeto = {};
+
+    if (
+      producto == "sirloin" ||
+      producto == "arrach." ||
+      producto == "costilla"
+    ) {
+      objeto = {
+        producto: producto,
+        almacen: porcion,
+        unico: "kg",
+      };
+    } else if (producto == "pollo") {
+      objeto = {
+        producto: producto,
+        almacen: porcion,
+        unico: "pz",
+      };
+    } else {
+      objeto = {
+        producto: producto,
+        almacen: 1,
+        unico: unico,
+      };
+    }
+
+    const descontarProducto = JSON.stringify([objeto]);
+
+    /* Falta ajustar logica  */
+
+    $.ajax({
+      url: "controladores/inventario.controlador.php",
+      type: "POST",
+      data: {
+        accion: "descontarAlmacen",
+        descontar: descontarProducto,
+      },
+      success: function (respuesta) {
+        console.log(respuesta);
+      },
+    });
+
+
+
+
+
   }
 
   /* ############################# Redibujar carrito ############################# */
@@ -398,7 +453,7 @@ $(document).ready(function () {
 
     if (
       producto == "sirloin" ||
-      producto == "arrach" ||
+      producto == "arrach." ||
       producto == "costilla"
     ) {
       objeto = {

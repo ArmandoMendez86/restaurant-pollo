@@ -1,5 +1,5 @@
 <head>
-    <title>Gastos | &#x1F35C;</title>
+    <title>Gastos | &#x1F4C9;</title>
 </head>
 
 <section class="gap">
@@ -15,6 +15,7 @@
                         <th>Id</th>
                         <th>Concepto</th>
                         <th>Monto</th>
+                        <th>Tipo</th>
                         <th>Fecha</th>
                         <th>Acciones</th>
                     </tr>
@@ -57,6 +58,15 @@
                         <label for="precio" class="col-sm-4 col-form-label">Monto</label>
                         <div class="col-sm-8">
                             <input type="number" step="0.5" class="form-control" id="monto">
+                        </div>
+                    </div>
+                    <div class="form-group d-flex mt-2 d-none" >
+                        <label for="precio" class="col-sm-4 col-form-label">Tipo</label>
+                        <div class="col-sm-8">
+                            <select id="tipoGasto" class="form-control">
+                                <option value="egreso" selected>General</option>
+                                <option value="ingreso">Caja</option>
+                            </select>
                         </div>
                     </div>
                 </form>

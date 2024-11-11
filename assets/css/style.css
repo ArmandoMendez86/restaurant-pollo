@@ -330,8 +330,8 @@ figure {
 /* 3. cart popup */
 .cart-popup {
   position: absolute;
-  right: -103px;
-  top: 67px;
+  right: 50px;
+  top: 50px;
   width: 340px;
   background-color: #ffd40d;
   padding: 25px 25px 20px;
