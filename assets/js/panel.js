@@ -45,7 +45,9 @@ $(document).ready(function () {
       },
     }).then((respuesta) => {
       let datos = JSON.parse(respuesta);
-      return parseFloat(datos[0].total_monto); // Retornar el monto como número
+      return datos[0] && !isNaN(parseFloat(datos[0].total_monto))
+        ? parseFloat(datos[0].total_monto)
+        : 0;
     });
   }
   function obtenerCaja() {
@@ -57,7 +59,9 @@ $(document).ready(function () {
       },
     }).then((respuesta) => {
       let datos = JSON.parse(respuesta);
-      return parseFloat(datos[0].monto);
+      return datos[0] && !isNaN(parseFloat(datos[0].monto))
+        ? parseFloat(datos[0].monto)
+        : 0;
     });
   }
 
@@ -70,7 +74,9 @@ $(document).ready(function () {
       },
     }).then((respuesta) => {
       let datos = JSON.parse(respuesta);
-      return parseFloat(datos[0].total_monto); // Retornar el monto como número
+      return datos[0] && !isNaN(parseFloat(datos[0].total_monto))
+        ? parseFloat(datos[0].total_monto)
+        : 0;
     });
   }
 });

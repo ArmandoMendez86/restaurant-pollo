@@ -15,7 +15,7 @@ $(document).ready(function () {
       [5, 10, 15, -1],
       [5, 10, 15, "Todos"],
     ],
-    /*  order: [[10, "desc"]], */
+    order: [[6, "desc"]],
     columns: [
       { data: "id", visible: false }, // Índice o número
       {
@@ -36,10 +36,7 @@ $(document).ready(function () {
       {
         data: "fecha",
         render: function (data, type, row) {
-          if (type === "display") {
-            return moment(data).format("DD/MM/YYYY H:mm:ss");
-          }
-          return data;
+          return moment(data).format("DD/MM/YYYY H:mm:ss");
         },
       },
     ],

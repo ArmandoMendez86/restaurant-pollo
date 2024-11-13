@@ -1,3 +1,7 @@
+<head>
+    <title>Ingresar | &#x1F60E;</title>
+</head>
+
 <style>
     .login-fondo {
     background-image: url('assets/img/login.webp');
